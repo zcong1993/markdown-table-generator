@@ -18,7 +18,7 @@
 		"commands": [
 			{
 				"command": "markdown-table-generator.generateTable",
-				"title": "Hello World"
+				"title": "Generate Table"
 			}
 		]
 	},
