@@ -2,6 +2,7 @@
   "name": "markdown-table-generator",
 	"displayName": "markdown-table-generator",
 	"description": "eazy generate markdown table",
+	"publisher": "zcong1993",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.54.0"
