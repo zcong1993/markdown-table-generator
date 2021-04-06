@@ -14,12 +14,12 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('markdown-table-generator.generateTable', () => {
+	let disposable = vscode.commands.registerCommand('markdown-table-generator.generateTable', async () => {
 		// The code you place here will be executed every time your command is executed
 
 		// Display a message box to the user
 		// vscode.window.showInformationMessage('Hello World from markdown-table-generator!');
-		vscode.window.showInputBox({
+		const cols = await vscode.window.showInputBox({
 			prompt: 'Columns Number',
 			placeHolder: 'Enter Columns Number',
 			ignoreFocusOut: true,
@@ -35,14 +35,30 @@ export function activate(context: vscode.ExtensionContext) {
 				return ''
 			},
 		})
-			.then(val => {
-				if (val) {
-					const editor = vscode.window.activeTextEditor;
-					if (editor) {
-						editor.edit(p => p.insert(editor.selection.active, generateTable(parseInt(val, 10))));
-					}
+
+		const rows = await vscode.window.showInputBox({
+			prompt: 'Rows Number',
+			placeHolder: 'Enter Rows Number',
+			ignoreFocusOut: true,
+			validateInput: (val) => {
+				const err = 'Rows Number should be [1, 100]'
+				const num = parseInt(val, 10)
+				if (isNaN(num)) {
+					return err
 				}
-			})
+				if (num < 1 || num > 100) {
+					return err
+				}
+				return ''
+			},
+		})
+
+		if (cols && rows) {
+			const editor = vscode.window.activeTextEditor;
+			if (editor) {
+				editor.edit(p => p.insert(editor.selection.active, generateTable(parseInt(cols, 10), parseInt(rows, 10))));
+			}
+		}
 	});
 
 	context.subscriptions.push(disposable);
